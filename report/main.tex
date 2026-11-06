@@ -39,7 +39,7 @@ The outcome is \texttt{Rating Cycle 1 Total Number of Health Deficiencies}: the 
 \section{Dataset}
 \textbf{(a) Eligibility.} Source: CMS Provider Data Catalog, ``Nursing Homes Including Rehab Services: Provider Information,'' processing date 2026-10-01 (\url{https://data.cms.gov/provider-data/dataset/4pq5-n9py}). These are publicly released U.S.\ government data. \TODO{Emily: confirm the terms of use on the CMS site and state permission.}
 \begin{enumerate}[label=(\roman*)]
-  \item 14{,}686 rows; one row is one Medicare/Medicaid-certified nursing home (identified by its CMS Certification Number). There are 102 columns, of which we intend to use about 25--35 as predictors (see feature sets).
+  \item 14{,}686 rows; one row is one Medicare/Medicaid-certified nursing home (identified by its CMS Certification Number). There are 102 columns, of which we use 24 (feature set 1) or 35 (feature set 2) as predictors (Section 6d).
   \item Predictors are both numeric (beds, staffing hours per resident-day, turnover, case-mix index) and categorical (ownership type, state, urban/rural, provider type, chain membership).
   \item The data are real administrative records: inspection results and payroll-based staffing reports, not simulated.
   \item The file is a single snapshot with one row per facility, not a time series or panel. Date columns are not used as features; \texttt{Date First Approved} may be converted to ``years certified,'' analogous to house age. \TODO{decide}
@@ -71,40 +71,48 @@ Before any exploration, we randomly set aside 20\% of facilities as a holdout us
 \section{Prediction}
 \textbf{(a) Metrics.} The primary metric is \textbf{RMSE} (in deficiencies), from 5-fold cross validation. RMSE is in the agency's units (``predictions are off by about $X$ deficiencies'') and penalizes large misses most. Large misses are the facilities an agency most needs to catch. Secondary metrics: MAE (typical error, less sensitive to the skewed tail) and Spearman rank correlation between predicted and actual counts, which measures how well the model \emph{orders} facilities for prioritization. \TODO{Emily: confirm the primary metric.}
 
-\textbf{(b) Training and comparison procedure.} All work uses only the 11{,}748 development rows. We use 5-fold \texttt{KFold(shuffle=True, random\_state=226)}. One fold object is created once and reused by every algorithm and feature set, so all comparisons use identical splits. Imputation, one-hot encoding and standardization are wrapped in an sklearn \texttt{Pipeline} and fit only on each training fold, then applied to the validation fold. Tuning: \TODO{nested CV, or tuning on the shared folds with the optimism noted}. Because facilities cluster within chains, we repeat the final comparison with \texttt{GroupKFold} by chain to check how optimistic ordinary CV is. \TODO{Evy: report the result.} The feature sets were motivated by exploratory analysis of the full development data, which makes CV estimates slightly optimistic; the untouched holdout gives the unbiased estimate in Part 2.
+\textbf{(b) Training and comparison procedure.} All work uses only the 11{,}748 development rows. We use 5-fold \texttt{KFold(shuffle=True, random\_state=226)}. One fold object is created once and reused by every algorithm and feature set, so all comparisons use identical splits. Imputation, one-hot encoding and standardization are wrapped in an sklearn \texttt{Pipeline} and fit only on each training fold, then applied to the validation fold. Feature engineering (ratios, logs, facility age) is row-wise and uses only fixed constants, so it introduces no cross-fold information. Tuned models use \emph{nested} CV: inside each outer training fold, \texttt{GridSearchCV} picks hyperparameters on 3 inner folds (seed 226), and the tuned model is scored on the untouched outer fold. Tuning on the reported folds themselves would give an optimistically biased score (the ``winner's curse''). Because 69\% of facilities belong to chains, we also refit the FS2 models on chain-grouped folds (\texttt{GroupKFold}; independents form their own groups). Grouped CV raised RMSE by only 0.03--0.07 and did not change the ranking of models, so plain CV is slightly optimistic but adequate for model selection. The feature sets were motivated by exploratory analysis of the full development data, which makes CV estimates slightly optimistic; the untouched holdout gives the unbiased estimate in Part 2.
 
-\textbf{(c) Baseline.} We predict the training-fold mean deficiency count for every facility, which is the constant that minimizes squared error. Its CV RMSE is \TODO{X}. Beating it shows that facility information carries signal beyond the national average; the size of the improvement tells the agency how much better prioritization becomes.
+\textbf{(c) Baseline.} We predict the training-fold mean deficiency count for every facility, which is the constant that minimizes squared error. Its CV RMSE is \textbf{8.07} deficiencies (MAE 5.87). Beating it shows that facility information carries signal beyond the national average; the size of the improvement tells the agency how much better prioritization becomes.
 
 \textbf{(d) Algorithms and feature sets.}
 \begin{itemize}
   \item \textbf{OLS linear regression:} minimizes squared error over linear functions of the features. It is interpretable and unbiased under a linear model, but it has no defense against variance from many correlated features. \TODO{Alex}
-  \item \textbf{Lasso:} squared error plus $\lambda\sum_j|\beta_j|$ on standardized features. It trades some bias for lower variance and sets weak coefficients to exactly zero, which helps with the near-duplicate staffing measures. $\lambda$ is chosen by CV. \TODO{Evy}
-  \item \textbf{Random forest:} averages many regression trees, each grown greedily on a bootstrap sample with random feature subsets at each split. It captures nonlinearities and interactions (for example, staffing effects that differ by size or ownership); averaging reduces the high variance of single trees. \TODO{Evy}
+  \item \textbf{Lasso:} squared error plus $\lambda\sum_j|\beta_j|$ on standardized features. It trades some bias for lower variance and sets weak coefficients to exactly zero, which helps with near-duplicate columns (weekday vs.\ weekend staffing, several history scores). We preferred it to ridge for that shorter, more explainable feature list. Penalty: 30 log-spaced values of sklearn's $\alpha=\lambda/2n$ from $10^{-4}$ to $1$.
+  \item \textbf{Random forest:} averages many regression trees, each grown greedily on a bootstrap sample with random feature subsets at each split. It captures nonlinearities and interactions (for example, staffing effects that differ by size or ownership); averaging reduces the high variance of single trees. We chose it over gradient boosting because it has fewer hyperparameters that matter. Grid: max depth $\{\mathrm{none}, 15\}$ $\times$ min samples per leaf $\{1,5,20\}$ $\times$ features per split $\{\sqrt{p}, 0.33p\}$ (12 settings, 300 trees, seed 226).
 \end{itemize}
 \emph{Feature set 1 (facility profile):} ownership (collapsed to three levels), urban/rural, provider type, in-hospital, CCRC, beds, residents per day, chain membership and chain size, reported staffing hours (RN, LPN, aide, total, weekend, PT), turnover (nursing, RN, administrator), case-mix index, ownership change in the last 12 months, resident \& family council, sprinklers, state. \\
 \emph{Feature set 2 (profile + history + engineered):} Set 1 plus prior-cycle inspection results (\texttt{Rating Cycle 2/3} counts and scores), occupancy (residents/beds), RN share of nursing hours, years certified, and $\log$(beds). This set tests how much inspection history and nonlinear transformations add.\\
-\emph{Excluded for leakage:} every \texttt{Rating Cycle 1} column, \texttt{Total Weighted Health Survey Score}, health-inspection and overall ratings (including chain averages), abuse, special-focus and high-performing icons, and fines, penalties and payment denials. \TODO{Alex/Emily: finalize; decide on QM ratings.}
+\emph{Excluded for leakage:} every \texttt{Rating Cycle 1} column, \texttt{Total Weighted Health Survey Score}, health-inspection and overall ratings (including chain averages), abuse, special-focus and high-performing icons, the ``inspection more than 2 years ago'' flag, and fines, penalties and payment denials. The staffing rating (computed from the included staffing hours) and the QM ratings (another CMS rating) are also excluded. \TODO{Alex/Emily: confirm the feature sets.}
 
 \textbf{(e) Results.}
 \begin{table}[h]\centering\small
-\begin{tabularx}{\linewidth}{llccX}
+\begin{tabularx}{\linewidth}{llcccX}
 \toprule
-Algorithm & Feature set & CV RMSE (mean $\pm$ SD) & CV MAE & Tuning tried $\rightarrow$ selected \\
+Algorithm & Set & RMSE (mean $\pm$ SD) & MAE & Spearman & Tuning tried $\rightarrow$ selected (5 outer folds) \\
 \midrule
-Baseline (mean) & -- & \TODO{} & \TODO{} & -- \\
-OLS & 1 & \TODO{} & \TODO{} & none \\
-OLS & 2 & \TODO{} & \TODO{} & none \\
-Lasso & 1 & \TODO{} & \TODO{} & $\lambda$: 50 values, $10^{-3}$--$10^{3}$ $\rightarrow$ \TODO{} \\
-Lasso & 2 & \TODO{} & \TODO{} & \TODO{} \\
-Random forest & 1 & \TODO{} & \TODO{} & depth, min leaf, max features (27 settings) $\rightarrow$ \TODO{} \\
-Random forest & 2 & \TODO{} & \TODO{} & \TODO{} \\
+Baseline (mean) & -- & 8.065 $\pm$ 0.176 & 5.870 & -- & -- \\
+OLS & 1 & 6.649 $\pm$ 0.179 & 4.729 & 0.587 & none \\
+OLS & 2 & 5.912 $\pm$ 0.112 & 4.207 & 0.671 & none \\
+Lasso & 1 & 6.649 $\pm$ 0.179 & 4.727 & 0.586 & 30 $\alpha$ values $\rightarrow$ 0.0013--0.0024 \\
+\textbf{Lasso} & \textbf{2} & \textbf{5.904 $\pm$ 0.104} & \textbf{4.199} & \textbf{0.671} & 30 $\alpha$ values $\rightarrow$ 0.0017--0.0033 \\
+Random forest & 1 & 6.620 $\pm$ 0.149 & 4.754 & 0.566 & 12 settings $\rightarrow$ no depth limit, leaf 1, $\sqrt{p}$ (4 of 5 folds) \\
+Random forest & 2 & 6.031 $\pm$ 0.086 & 4.332 & 0.642 & 12 settings $\rightarrow$ no depth limit, leaf 1, $\sqrt{p}$ (5 of 5 folds) \\
 \bottomrule
 \end{tabularx}
-\caption{5-fold CV performance on the development data (identical folds, seed 226).}
+\caption{Nested 5-fold CV on the 11{,}717 development rows with a non-missing outcome (identical outer folds, seed 226). RMSE and MAE are in deficiencies. Spearman is the rank correlation between predicted and actual counts. Total tuning: 30 lasso and 12 random-forest settings per feature set, each tried on 3 inner folds within all 5 outer folds.}
 \end{table}
-\TODO{Evy: which algorithm wins for each feature set; how changing the feature set affects each one; whether gaps exceed the fold SD and matter to the agency, in deficiencies.}
+\vspace{-0.3cm}
+Every model beats the baseline by a wide margin. The best models cut RMSE by about 27\% (8.07 to 5.90), which explains roughly 46\% of the variance out of fold. \emph{Feature set matters more than algorithm:} adding prior inspection history and the engineered features (set 2) lowers RMSE by about 0.74 deficiencies for the linear models and 0.59 for the random forest. That gain is 4--7 times the fold-to-fold SD and lifts the rank correlation from about 0.59 to 0.67, a real improvement in how well the agency can order facilities. \emph{Within a feature set, algorithms are nearly tied.} Lasso and OLS differ by 0.008 RMSE, and their per-fold differences change sign. The selected penalties are small because $n=11{,}717$ is large relative to about 105 encoded columns, so OLS variance is already low. The random forest ties the linear models on set 1 but is worse on set 2 (by 0.13, in all 5 folds). Its strongest signal, prior deficiencies, is close to linear, so the forest's flexibility adds variance without reducing bias. Two checks confirm this. Pushing the forest beyond its grid edge ($0.1p$, $0.5p$, $p$ features per split) gave 6.03--6.10, and an untuned gradient-boosting model reached 5.94, close to lasso but not better. For the agency, a 0.1-deficiency gap between algorithms is not practically meaningful; including inspection history is.
 
-\textbf{(f) Final model.} \TODO{Evy: selected combination, why, and an interpretation. The refit pipeline is saved as \texttt{models/final\_pipeline.joblib} for Part 2.}
+\textbf{(f) Final model.} We select \textbf{lasso on feature set 2}. It has the lowest CV RMSE, the primary metric. It is statistically tied with OLS, but its shrinkage stabilizes the collinear staffing and history columns, and it was the least optimistic model under chain-grouped CV (+0.03). Unlike the forest, its coefficients can be explained to the agency. Refit on all development data, CV re-selects $\alpha=0.0024$ (84 of 105 coefficients nonzero; non-nested CV RMSE 5.905). Holding other features fixed, \emph{associations} (not causal effects) per standard deviation:
+\begin{itemize}
+  \item Prior-cycle deficiencies: $+5.0$, by far the strongest predictor.
+  \item Facility size ($+0.9$ per SD of log beds), a recent ownership change ($+0.8$), and administrator, RN and nursing turnover ($+0.5$ each).
+  \item Total nurse staffing hours: $-0.4$. Non-profit ($-0.6$) and government ($-0.5$) ownership predict fewer deficiencies than for-profit.
+  \item State effects are large (40 of 52 state indicators are nonzero) and likely reflect inspector strictness as well as care quality.
+\end{itemize}
+The fitted pipeline (imputation, encoding, scaling, lasso) is saved by \texttt{scripts/04\_final\_model.py} as \texttt{models/final\_pipeline.joblib}. There is no classification threshold. It will be scored once on the holdout in Part 2.
 
 % ======================================================================
 \section{Stakeholder guidance}
@@ -115,7 +123,7 @@ Random forest & 2 & \TODO{} & \TODO{} & \TODO{} \\
 % ======================================================================
 \section{AI tools}
 \TODO{Each member: tools and versions, tasks delegated, how outputs were checked, one concrete suggestion accepted/modified/rejected.}
-Evy used Claude (Anthropic, Claude Opus 5.5, via the Claude desktop app) to summarize lecture slides, plan the work split, review the split script, draft this report template, and recommend an outcome and leakage list. Checks: \TODO{}. Example: \TODO{e.g., accepted the recommendation to drop the chain-average ratings as leakage after confirming they include the facility's own score.}
+Evy used Claude (Anthropic, Claude Opus 5.5, Claude desktop app). It summarized lecture slides, planned the work split, reviewed the split script, recommended an outcome and leakage list, and wrote the Section 6 code (shared pipeline, nested CV, robustness checks, final model) and a first draft of Sections 6b--6f. Checks: \TODO{Evy: e.g., reran the scripts from a clean clone, confirmed no code reads the holdout, spot-checked the leakage list against the CMS rating methodology, and checked that every number in Table 1 matches \texttt{results/cv\_results.csv}.} Example: \TODO{Evy: e.g., the assistant first planned to tune on the same folds it reported; we modified this to nested CV so the tuned models' scores are not optimistic.}
 
 % ======================================================================
 \section{Code}
