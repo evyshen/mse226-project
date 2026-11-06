@@ -1,0 +1,85 @@
+,coef_per_1sd_or_vs_baseline_level
+cat__State_DC,11.438441747564928
+num__Rating Cycle 2/3 Total Number of Health Deficiencies,5.014147014016594
+cat__State_AR,-4.905247593982947
+cat__State_NM,4.567438270508159
+cat__State_MD,4.165465447268768
+cat__State_NC,-3.688359807527105
+cat__State_KY,-3.6617019232208547
+cat__State_VA,3.4447708281321265
+cat__State_LA,-3.3277985519100244
+cat__State_TN,-3.3144301706509705
+cat__State_GA,-3.0398040011990717
+cat__State_WA,2.9952013751488336
+cat__State_SC,-2.9403335917125832
+cat__State_CA,2.8138994234848287
+cat__State_OK,-2.6338204296654766
+cat__State_MA,-2.5867417442953626
+cat__State_AL,-2.3927300448191926
+cat__State_NH,-1.9560619464503888
+cat__State_ID,1.7678171333884574
+cat__State_AZ,-1.6677968364139486
+cat__State_KS,1.5405843305635634
+cat__State_IN,-1.1823289349518147
+cat__State_FL,-1.1378373501623784
+cat__State_IL,1.1024974613537721
+cat__State_ME,1.093564934038048
+cat__State_CT,0.9655451591774181
+num__log_beds,0.891747451307083
+cat__Provider Changed Ownership in Last 12 Months_Y,0.8297503452119307
+cat__Provider Type_Medicare and Medicaid,0.6768631801503108
+cat__State_UT,0.6765467694361632
+num__Rating Cycle 2/3 Number of Complaint Health Deficiencies,-0.6585287947953969
+cat__ownership3_non_profit,-0.6243797187097716
+cat__State_OR,-0.5969362128705322
+cat__State_NY,-0.5898948763251671
+cat__State_OH,0.5829533322066696
+cat__State_VT,-0.5560231390089521
+num__Number of administrators who have left the nursing home,0.5351936615002779
+cat__ownership3_government,-0.5278743286103181
+num__Registered Nurse turnover,0.5174157530587413
+cat__State_RI,0.45741704310923964
+num__Total nursing staff turnover,0.45384680798954335
+num__Average Number of Residents per Day,-0.43169402460079076
+num__Reported Total Nurse Staffing Hours per Resident per Day,-0.419756427307804
+num__Rating Cycle 2/3 Health Deficiency Score,-0.3766670613059918
+cat__State_MN,-0.3712078749113489
+cat__State_WI,0.3089324613108257
+num__years_certified,0.3062153359216226
+num__Number of Certified Beds,0.30380126678056807
+cat__State_CO,0.30322647506721256
+cat__State_MO,0.2998064631355875
+num__Rating Cycle 2 Number of Standard Health Deficiencies,-0.2970753423342268
+num__occupancy,0.28490912279757485
+num__Total number of nurse staff hours per resident per day on the weekend,0.2688256350417281
+cat__State_IA,-0.24724156188461877
+cat__With a Resident and Family Council_Resident,0.24586266542621663
+cat__State_WV,0.23640059719706666
+num__Rating Cycle 2/3 Total Health Score,-0.23562677745493527
+num__missingindicator_Total nursing staff turnover,0.22107764712872136
+cat__State_NE,0.21090974329738835
+num__missingindicator_Number of administrators who have left the nursing home,0.20924273264569263
+cat__State_PA,-0.2030194789624765
+num__rn_share,-0.18055533985771802
+num__Rating Cycle 2/3 Health Revisit Score,-0.14615047832848577
+num__Nursing Case-Mix Index,0.14146057813072918
+cat__State_TX,-0.13215572800575162
+num__missingindicator_Reported Physical Therapist Staffing Hours per Resident Per Day,-0.13127450903804003
+num__missingindicator_Nursing Case-Mix Index,0.11488564884517435
+num__chain_size,-0.11457746500569206
+num__Reported Nurse Aide Staffing Hours per Resident per Day,-0.11019216542396541
+cat__Urban_Y,0.10896033777407546
+num__Registered Nurse hours per resident per day on the weekend,0.0794978550340527
+num__missingindicator_Registered Nurse turnover,0.07279803249923905
+num__missingindicator_Number of Certified Beds,0.056828537560118735
+num__Rating Cycle 2/3 Number of Health Revisits,-0.04211489001608876
+cat__in_chain_Y,-0.02105774088356875
+num__missingindicator_Average Number of Residents per Day,-0.006242533652311422
+num__missingindicator_Reported Nurse Aide Staffing Hours per Resident per Day,0.0014492140532024146
+num__Reported Physical Therapist Staffing Hours per Resident Per Day,0.0004717083015442406
+num__missingindicator_log_beds,0.00010844276733767359
+num__missingindicator_Reported LPN Staffing Hours per Resident per Day,6.367413779534907e-17
+num__missingindicator_Reported RN Staffing Hours per Resident per Day,1.334124791902552e-17
+num__missingindicator_Reported Total Nurse Staffing Hours per Resident per Day,1.334124791902552e-17
+num__missingindicator_Total number of nurse staff hours per resident per day on the weekend,1.212840719911411e-18
+num__missingindicator_Registered Nurse hours per resident per day on the weekend,1.212840719911411e-18
