@@ -149,8 +149,9 @@ WHEN FINISHED
 4. In Section 6(d), replace the OLS bullet's text, which ends in `\TODO{Alex}`, with the OLS bullet from the same file.
 5. In **Section 8 (AI tools)**, paste your entry from **`overleaf_section8.tex`** above Evy's.
 6. In the author line near the top, replace `Alex \TODO{last name}` with your full name.
-7. **Upload the figure:** on the left file panel click the **upload icon** (arrow ↑) → **New folder** first, named
-   `figures`. Then select that folder → upload → choose **`alex_deliverables/figures/fig1.pdf`**.
+7. **Upload the figure:** in the left file panel, click the **New folder** icon and name it `figures`. Click the new
+   `figures` folder to select it, then click the **Upload** icon (arrow ↑) and choose
+   **`alex_deliverables/figures/fig1.pdf`**.
 8. Near the bottom, under `\section*{Figures}`, delete the `\TODO{...}` line and paste the
    `\includegraphics` line from your file.
 9. Click **Recompile** (green button). If you see red errors, copy the error message into Claude and ask it to fix the
