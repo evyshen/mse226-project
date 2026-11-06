@@ -1,13 +1,13 @@
 # Alex: start here
 
 Hi Alex! You **don't need to learn git or GitHub** for this. Claude does the analysis, you check it, and Evy puts it on
-GitHub. Plan for about 15 minutes of setup, then Claude does most of the work.
+GitHub. Plan for about 5 minutes of setup, then Claude does most of the work.
 
 **Who does what:**
 
 | Step | You | Claude | Evy |
 | --- | --- | --- | --- |
-| Get the files | Download 2 things (below) | | Shares dev.csv |
+| Get the files | Download 1 ZIP (below) | | |
 | Do the analysis | Paste the prompt, answer its questions, check results | Writes code, runs it, makes figures, drafts text | |
 | Hand it in | Send Evy one ZIP, paste the text into Overleaf | | Commits your files to GitHub |
 
@@ -24,23 +24,11 @@ GitHub. Plan for about 15 minutes of setup, then Claude does most of the work.
    `mse226-project-main`.
 4. Move that folder somewhere easy to find, e.g. **Documents**. Rename it to `mse226-project` if you like.
 
-## Step 2: Add the data file (2 min)
+## Step 2: Check the data is there (30 sec)
 
-1. Evy shared **`dev.csv`** with you on Google Drive. Open it in Drive and click **Download** (⋮ menu → Download).
-2. Move the downloaded `dev.csv` into the **`data`** folder inside `mse226-project` (next to the `README.md` that's
-   already in there).
-3. ⚠️ **Only `dev.csv`.** If you ever see `holdout.csv`, don't open it, download it, or give it to Claude. The handout
-   says the holdout must stay untouched until Part 2.
-
-Your folder should look like this:
-
-```
-mse226-project/
-  data/
-    dev.csv        <- you added this
-    README.md
-  src/  scripts/  results/  reviews/  DECISIONS.md  README.md ...
-```
+Open the `data` folder inside `mse226-project`. You should see **`dev.csv`**, which came with the ZIP, so there's nothing to
+download. ⚠️ If you ever see **`holdout.csv`**, don't open it or give it to Claude. The handout says the holdout stays
+untouched until Part 2.
 
 ## Step 3: Start Claude (2 min)
 
@@ -161,7 +149,7 @@ WHEN FINISHED
 ## Final checklist
 
 - [ ] Claude ran `scripts/06_eda.py` with no errors, and you saw the tables and Figure 1.
-- [ ] Nothing from `data/` is inside `alex_deliverables.zip`.
+- [ ] Nothing from `data/` is inside `alex_deliverables.zip` (dev.csv is already in the repo).
 - [ ] You can explain each plot and number in your own words.
 - [ ] Sections 5a–5e, the OLS bullet, your Section 8 entry, your name and Figure 1 are all in Overleaf, and it compiles.
 - [ ] You sent `alex_deliverables.zip` to Evy.

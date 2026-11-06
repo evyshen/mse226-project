@@ -1,10 +1,11 @@
-# data/ (not tracked by git)
+# data/
 
-Put these files here locally. Nothing in this folder is committed.
-
-| File | Who has it | Source |
+| File | In git? | Notes |
 | --- | --- | --- |
-| `NH_ProviderInfo_Oct2026.csv` | everyone | CMS Provider Data Catalog, "Nursing Homes Including Rehab Services: Provider Information", processing date 2026-10-01 (https://data.cms.gov/provider-data/dataset/4pq5-n9py). Must be the October 2026 file: `01_dedup_and_split.py` checks its SHA-256. |
-| `dev.csv` | everyone | output of `01_dedup_and_split.py` (11,748 rows) |
-| `split_ccns.csv` | everyone | output of `01_dedup_and_split.py` (facility ID -> split) |
-| `holdout.csv` | **Person A only, until Part 2** | output of `01_dedup_and_split.py` (2,938 rows). Do not open, plot, or upload to any AI tool. |
+| `dev.csv` | **yes** | 80% development split (11,748 rows), the only data Part 1 code reads. Output of `01_dedup_and_split.py`. |
+| `split_ccns.csv` | **yes** | Facility ID -> `dev`/`holdout` label for all 14,686 facilities, so the split can be rebuilt from IDs alone. IDs only, no outcomes. |
+| `NH_ProviderInfo_Oct2026.csv` | **no** | Raw CMS file, processing date 2026-10-01 (https://data.cms.gov/provider-data/dataset/4pq5-n9py). Not committed because it contains the holdout rows. `01_dedup_and_split.py` checks its SHA-256. CMS replaces this file monthly, so a copy is kept on the team Drive. |
+| `holdout.csv` | **never** | 20% holdout (2,938 rows). Person A only, until Part 2. Never opened, plotted, committed, or given to an AI tool. |
+
+All of these are public U.S. government data (CMS, not copyrighted; 17 U.S.C. § 105). The raw file and the holdout are
+kept out of git to protect the holdout, not because of licensing.

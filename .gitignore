@@ -30,3 +30,11 @@ report/*.pdf
 *.aux
 *.log
 *.out
+
+# --- Data we DO commit (public CMS data; dev split + split assignment only)
+!data/dev.csv
+!data/split_ccns.csv
+# --- Never committed, even if someone renames or copies them
+data/holdout*.csv
+data/NH_ProviderInfo*.csv
+**/holdout*.csv

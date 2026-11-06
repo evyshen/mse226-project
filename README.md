@@ -22,7 +22,7 @@ data/                   local only, never committed (see data/README.md)
 ```bash
 python3.13 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-# put NH_ProviderInfo_Oct2026.csv in data/, then:
+# dev.csv is already in data/. To rebuild the split, put NH_ProviderInfo_Oct2026.csv in data/ and run:
 python 01_dedup_and_split.py
 python scripts/02_cv_models.py all
 python scripts/03_summarize_and_checks.py --group --edge
@@ -33,7 +33,7 @@ Expected output: 14,686 raw rows, 11,748 dev, 2,938 holdout, seed 226, and a hol
 
 ## Ground rules
 
-1. **No data in git.** `.gitignore` blocks `data/` and all CSVs. Check `git status` before every commit.
+1. **Only `data/dev.csv` and `data/split_ccns.csv` are in git.** `.gitignore` blocks every other CSV in `data/`, and the raw file and holdout by name. Check `git status` before every commit.
 2. **The holdout is untouched until Part 2.** Only Person A keeps `holdout.csv`. Nobody loads it, and nobody gives it, its folder, or the raw file plus `split_ccns.csv` to an AI tool.
 3. **One fold object for every model.** Import the CV folds from `src/`. Don't create your own `KFold`.
 4. **Fit preprocessing inside the folds.** Imputation, scaling and feature selection go inside an sklearn `Pipeline`.
