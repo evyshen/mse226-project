@@ -1,0 +1,69 @@
+{
+  "model": "rf",
+  "fs": "FS2",
+  "rmse": [
+    6.07831399634072,
+    5.974768703386644,
+    6.063852479673587,
+    5.913284745570166,
+    6.1257333659827955
+  ],
+  "mae": [
+    4.388658987485779,
+    4.275106655290102,
+    4.332535211267606,
+    4.34073694693413,
+    4.322613458528952
+  ],
+  "spearman": [
+    0.6283881492373538,
+    0.6685426702751248,
+    0.634425058510122,
+    0.6338119266124279,
+    0.646438487037174
+  ],
+  "grid": {
+    "model__max_depth": [
+      "None",
+      "15"
+    ],
+    "model__min_samples_leaf": [
+      "1",
+      "5",
+      "20"
+    ],
+    "model__max_features": [
+      "sqrt",
+      "0.33"
+    ]
+  },
+  "n_configs": 12,
+  "chosen_per_fold": [
+    {
+      "model__max_depth": "None",
+      "model__max_features": "sqrt",
+      "model__min_samples_leaf": "1"
+    },
+    {
+      "model__max_depth": "None",
+      "model__max_features": "sqrt",
+      "model__min_samples_leaf": "1"
+    },
+    {
+      "model__max_depth": "None",
+      "model__max_features": "sqrt",
+      "model__min_samples_leaf": "1"
+    },
+    {
+      "model__max_depth": "None",
+      "model__max_features": "sqrt",
+      "model__min_samples_leaf": "1"
+    },
+    {
+      "model__max_depth": "None",
+      "model__max_features": "sqrt",
+      "model__min_samples_leaf": "1"
+    }
+  ],
+  "seconds": 170.4
+}

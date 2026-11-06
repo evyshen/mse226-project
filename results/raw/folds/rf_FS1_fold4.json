@@ -1,0 +1,1 @@
+{"rmse": 6.81590147229062, "mae": 4.792617726561388, "spearman": 0.5587464494024112, "chosen": {"model__max_depth": "None", "model__max_features": "0.33", "model__min_samples_leaf": "1"}, "seconds": 29.4}
