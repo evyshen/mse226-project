@@ -6,7 +6,12 @@ Team: Emily (Person A), Alex (Person B), Evy (Person C).
 
 ```
 01_dedup_and_split.py   Step 1: duplicate checks + seeded 80/20 split (Person A)
-src/                    shared code (pipeline.py, CV folds, evaluate())
+src/                    shared code: config.py (outcome, seed), features.py (feature sets,
+                        leakage list), pipeline.py (CV folds, in-fold preprocessing, evaluate())
+scripts/                02 CV for all models, 03 results table + checks, 04 final model,
+                        predict_holdout.py (Part 2 only)
+results/                aggregate CV results (no data rows)
+DECISIONS.md            every modeling decision with its rationale
 notebooks/              EDA and modeling notebooks, one per person/topic
 reviews/                code and write-up review notes
 data/                   local only, never committed (see data/README.md)
@@ -19,6 +24,9 @@ python3.13 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 # put NH_ProviderInfo_Oct2026.csv in data/, then:
 python 01_dedup_and_split.py
+python scripts/02_cv_models.py all
+python scripts/03_summarize_and_checks.py --group --edge
+python scripts/04_final_model.py
 ```
 
 Expected output: 14,686 raw rows, 11,748 dev, 2,938 holdout, seed 226, and a holdout ID fingerprint matching the one in the script.
