@@ -1,41 +1,32 @@
-# MS&E 226 Project: Nursing home ratings (CMS Provider Information, Oct 2026)
+# MS&E 226 — Alex (Person B) handoff
 
-Team: Emily (Person A), Alex (Person B), Evy (Person C).
+**Not yet final results.** The provided files contain the original CMS nursing-home CSV, project instructions, and role assignments, but no Emily-created 80% development dataset, agreed outcome, or Evy-created common cross-validation pipeline. The assignment forbids exploring the 20% holdout in Part 1. This script deliberately does not load the original CSV.
 
-## Layout
+## Inputs needed from team
+1. Emily: deduplicated 80% development CSV, fixed split seed, and exact outcome definition.
+2. Evy: agreed cross-validation folds, seed, and evaluation function (replace this script's provisional 5-fold CV with Evy's common folds before reporting model comparisons).
+3. Confirm whether outcome is continuous or binary. `Overall Rating` is only a possible outcome; it is **not** confirmed as the team's choice. If you select rating, consider whether it is a sensible prediction target, and exclude any rating components and other target-leaking variables.
 
-```
-01_dedup_and_split.py   Step 1: duplicate checks + seeded 80/20 split (Person A)
-src/                    shared code: config.py (outcome, seed), features.py (feature sets,
-                        leakage list), pipeline.py (CV folds, in-fold preprocessing, evaluate())
-scripts/                02 CV for all models, 03 results table + checks, 04 final model,
-                        predict_holdout.py (Part 2 only)
-results/                aggregate CV results (no data rows)
-DECISIONS.md            every modeling decision with its rationale
-notebooks/              EDA and modeling notebooks, one per person/topic
-reviews/                code and write-up review notes
-data/                   local only, never committed (see data/README.md)
-```
+## Run
+`python alex_analysis.py --development PATH_TO_EMILY_DEVELOPMENT.csv --outcome 'YOUR OUTCOME COLUMN' --task regression --output alex_results`
 
-## Setup
+For a binary outcome already defined in the development CSV, use `--task classification`.
 
-```bash
-python3.13 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-# put NH_ProviderInfo_Oct2026.csv in data/, then:
-python 01_dedup_and_split.py
-python scripts/02_cv_models.py all
-python scripts/03_summarize_and_checks.py --group --edge
-python scripts/04_final_model.py
-```
+Outputs: missingness.csv; correlations and plots for continuous outcomes; predictor pair correlations; subgroup tables; two feature sets; and cross-validated linear/logistic model scores. Inspect every selected feature for timing, leakage, appropriateness, and the team's agreed outcome. The automatic feature sets are a **starting proposal**, not final choices.
 
-Expected output: 14,686 raw rows, 11,748 dev, 2,938 holdout, seed 226, and a holdout ID fingerprint matching the one in the script.
+## Handoff to Emily
+Send missingness.csv and a brief recommendation: within each training fold, median-impute numeric features, mode-impute categorical features, and one-hot encode categorical features. Review whether columns with >35% missingness should be excluded and whether missingness is informative. No imputation should be fitted on the holdout or full development data before CV.
 
-## Ground rules
+## Handoff to Evy
+Send the feature_sets object in analysis_metadata.json, the linear_model_cv_results.csv, and any leakage exclusions. Rerun with the exact shared CV folds and metric before combining with Evy's models.
 
-1. **No data in git.** `.gitignore` blocks `data/` and all CSVs. Check `git status` before every commit.
-2. **The holdout is untouched until Part 2.** Only Person A keeps `holdout.csv`. Nobody loads it, and nobody gives it, its folder, or the raw file plus `split_ccns.csv` to an AI tool.
-3. **One fold object for every model.** Import the CV folds from `src/`. Don't create your own `KFold`.
-4. **Fit preprocessing inside the folds.** Imputation, scaling and feature selection go inside an sklearn `Pipeline`.
-5. **Branch, then pull request.** Work on `name/topic` branches and open a PR into `main`. Evy reviews before merging.
-6. **Fixed seeds everywhere:** `random_state=226`.
+## Suggested report organization
+5a: CMS Nursing Home Compare / Care Compare facility-level public reporting. Explain provider self-reporting, administrative sources, inspection-based measures, reporting lags, measurement error, and selection issues. Confirm exact source provenance with Emily.
+5b: Name strongest/weakest associations with the **agreed outcome**; include correlation plot and subgroup comparisons; distinguish association from causation.
+5c: Report largest absolute covariate pair correlations; discuss multicollinearity and overlapping staffing measures.
+5d: Compare ownership type, urban status, chain membership, and provider type if available and substantively appropriate.
+5e: Quantify missingness, describe training-fold-only imputation and excluded variables.
+6d: Feature set A = operational staffing/size indicators; set B = broader nonleaking facility profile. Explain why operational vs broader predictors might affect generalization. Linear/logistic model provides an interpretable benchmark; include both feature sets and evaluation metrics.
+
+## AI note for Evy (edit to reflect actual use)
+Used ChatGPT (GPT-6) to draft a reproducible EDA and regression script and identify potential leakage risks. Checked the script against assignment requirements; pending validation against Emily's development split and Evy's shared evaluation pipeline. Do not claim to have completed checks that were not performed.
