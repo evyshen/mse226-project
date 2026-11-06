@@ -43,12 +43,12 @@ def table():
             rows.append({
                 "algorithm": NAMES[m], "feature_set": "--" if m == "baseline" else fs,
                 "rmse_mean": np.mean(d["rmse"]), "rmse_sd": np.std(d["rmse"], ddof=1),
-                "mae_mean": np.mean(d["mae"]), "spearman_mean": np.mean(d["spearman"]),
+                "mae_mean": np.mean(d["mae"]),
                 "n_configs": d["n_configs"], "selected_per_fold": sel,
             })
     t = pd.DataFrame(rows)
     t.to_csv(RESULTS_DIR / "cv_results.csv", index=False)
-    print(t[["algorithm", "feature_set", "rmse_mean", "rmse_sd", "mae_mean", "spearman_mean"]].round(3).to_string())
+    print(t[["algorithm", "feature_set", "rmse_mean", "rmse_sd", "mae_mean"]].round(3).to_string())
     return t
 
 

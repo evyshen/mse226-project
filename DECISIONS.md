@@ -29,7 +29,7 @@ so the pipeline could run, and they change in one place (`src/config.py`, `src/f
 | C2 | Preprocessing inside the `Pipeline`: median imputation with missing-indicator columns, one-hot encoding (drop first, ignore unseen levels), standardization | Imputing once on all the data | Imputation and scaling are estimated from data, so they must be fit on training folds only (L4, handout 6b). Missing indicators keep the signal that "turnover not reported" may itself be informative. Standardization is required for lasso (L3). |
 | C3 | Feature engineering is row-wise only, so it runs before CV | Engineering inside the folds | Ratios, logs and age use only a row's own values plus constants, so no information crosses folds. |
 | C4 | Tuning by **nested CV**: GridSearchCV over 3 inner folds inside each outer training fold | Tuning on the same 5 folds that are reported | Tuning on the reported folds gives an optimistic score, the winner's curse (L3, L4). Nested CV keeps the reported scores honest for the tuned models. |
-| C5 | Metrics: RMSE primary; MAE and Spearman rank correlation secondary | R², accuracy on binned counts | RMSE is in deficiencies and penalizes big misses, which are the facilities an agency must catch (L2). Spearman measures how well the model **ranks** facilities, which is the agency's actual decision (inspection order). R² is in-sample in spirit (L2). |
+| C5 | Metrics: RMSE primary; MAE secondary | R², Spearman rank correlation (dropped 2026-11-06: not covered in lectures, hard for every member to defend) | RMSE is in deficiencies and penalizes big misses, which are the facilities an agency must catch (L2). MAE is the typical error and is less driven by the skewed tail. Both come from Lecture 2. |
 | C6 | Clustering check: refit the FS2 models on chain-grouped folds (`GroupKFold`; each independent facility is its own group) | Ignore clustering | 69% of facilities are in chains, so plain CV may leak chain-level information across folds (L10). |
 
 ## Section 6c: baseline
@@ -50,20 +50,20 @@ so the pipeline could run, and they change in one place (`src/config.py`, `src/f
 
 ## Section 6e: results (dev data, 5-fold CV, seed 226)
 
-| Algorithm | FS | RMSE mean +/- SD | MAE | Spearman | Tuning (tried -> selected) |
-|---|---|---|---|---|---|
-| Baseline (mean) | -- | 8.065 +/- 0.176 | 5.870 | -- | -- |
-| OLS | FS1 | 6.649 +/- 0.179 | 4.729 | 0.587 | none |
-| OLS | FS2 | 5.912 +/- 0.112 | 4.207 | 0.671 | none |
-| Lasso | FS1 | 6.649 +/- 0.179 | 4.727 | 0.586 | 30 alphas -> 0.0013 to 0.0024 |
-| **Lasso** | **FS2** | **5.904 +/- 0.104** | **4.199** | **0.671** | 30 alphas -> 0.0017 to 0.0033 |
-| Random forest | FS1 | 6.620 +/- 0.149 | 4.754 | 0.566 | 12 settings -> depth None, leaf 1, sqrt (4 of 5 folds) |
-| Random forest | FS2 | 6.031 +/- 0.086 | 4.332 | 0.642 | 12 settings -> depth None, leaf 1, sqrt (5 of 5 folds) |
+| Algorithm | FS | RMSE mean +/- SD | MAE | Tuning (tried -> selected) |
+|---|---|---|---|---|
+| Baseline (mean) | -- | 8.065 +/- 0.176 | 5.870 | -- |
+| OLS | FS1 | 6.649 +/- 0.179 | 4.729 | none |
+| OLS | FS2 | 5.912 +/- 0.112 | 4.207 | none |
+| Lasso | FS1 | 6.649 +/- 0.179 | 4.727 | 30 alphas -> 0.0013 to 0.0024 |
+| **Lasso** | **FS2** | **5.904 +/- 0.104** | **4.199** | 30 alphas -> 0.0017 to 0.0033 |
+| Random forest | FS1 | 6.620 +/- 0.149 | 4.754 | 12 settings -> depth None, leaf 1, sqrt (4 of 5 folds) |
+| Random forest | FS2 | 6.031 +/- 0.086 | 4.332 | 12 settings -> depth None, leaf 1, sqrt (5 of 5 folds) |
 
 **Reading the table:**
 
 - **Every model beats the baseline by a wide margin.** FS2 models cut RMSE by about 27% (8.07 to 5.90), which explains roughly 46% of the variance out of fold.
-- **Adding inspection history (FS1 to FS2) is the biggest gain:** about 0.74 deficiencies for the linear models and 0.59 for RF. That is 4 to 7 times the fold SD, so it's real and matters to the agency. Prior deficiencies alone have a Spearman correlation of about 0.5 with the outcome.
+- **Adding inspection history (FS1 to FS2) is the biggest gain:** about 0.74 deficiencies for the linear models and 0.59 for RF. That is 4 to 7 times the fold SD, so it's real and matters to the agency. Prior-cycle deficiencies alone have a correlation of 0.62 with the outcome.
 - **Algorithm differences within a feature set are small.** Lasso and OLS are tied: 0.008 apart, with the per-fold differences changing sign. The lasso chose very small alphas, so the variance reduction over OLS is slight; n = 11,717 is large relative to about 105 encoded features, so OLS variance is already low (L7).
 - **RF is slightly worse on FS2** (+0.13 RMSE, worse in all 5 folds). The strongest signal (prior deficiencies to current deficiencies) is close to linear, so the forest's flexibility adds variance without reducing bias much. On FS1, RF ties the linear models.
 - **Practically meaningful?** For the agency, a gap of 0.1 deficiencies is not meaningful; choosing FS2 (history) is.

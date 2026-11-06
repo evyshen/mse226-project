@@ -1,9 +1,7 @@
 """Shared evaluation code (report Section 6b). Every model must use these folds and evaluate()."""
 import numpy as np
-from scipy.stats import spearmanr
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import make_scorer
 from sklearn.model_selection import GroupKFold, KFold, cross_validate
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -39,22 +37,17 @@ def make_pipeline(model, num_cols, cat_cols, scale=True):
     return Pipeline([("prep", make_preprocessor(num_cols, cat_cols, scale)), ("model", model)])
 
 
-def _spearman(y, yhat):
-    return spearmanr(y, yhat).statistic
-
-
 SCORING = {
     "rmse": "neg_root_mean_squared_error",
     "mae": "neg_mean_absolute_error",
-    "spearman": make_scorer(_spearman),
 }
 
 
 def evaluate(estimator, X, y, cv=FOLDS, groups=None, n_jobs=1):
-    """Return per-fold RMSE, MAE, Spearman (validation folds only) plus fitted fold estimators."""
+    """Return per-fold RMSE and MAE (validation folds only) plus fitted fold estimators."""
     out = cross_validate(estimator, X, y, cv=cv, groups=groups, scoring=SCORING,
                          return_estimator=True, n_jobs=n_jobs)
     return {
-        "rmse": -out["test_rmse"], "mae": -out["test_mae"], "spearman": out["test_spearman"],
+        "rmse": -out["test_rmse"], "mae": -out["test_mae"],
         "estimators": out["estimator"],
     }

@@ -60,7 +60,6 @@ def run(model, fs, df, y):
     each finished outer fold is cached in results/raw/folds/ and skipped on rerun."""
     from sklearn.base import clone
     from sklearn.metrics import mean_absolute_error, root_mean_squared_error
-    from scipy.stats import spearmanr
     pipe, grid = spec(model, fs)
     est = pipe if grid is None else GridSearchCV(pipe, grid, cv=INNER_FOLDS,
                                                  scoring="neg_root_mean_squared_error", n_jobs=1)
@@ -76,7 +75,6 @@ def run(model, fs, df, y):
             yv = y.iloc[va]
             f.write_text(json.dumps({
                 "rmse": root_mean_squared_error(yv, yhat), "mae": mean_absolute_error(yv, yhat),
-                "spearman": spearmanr(yv, yhat).statistic,
                 "chosen": {kk: str(v) for kk, v in e.best_params_.items()} if grid else None,
                 "seconds": round(time.time() - t, 1)}))
             if time.time() - START > BUDGET:
@@ -85,7 +83,6 @@ def run(model, fs, df, y):
     out = {
         "model": model, "fs": fs,
         "rmse": [d["rmse"] for d in folds], "mae": [d["mae"] for d in folds],
-        "spearman": [d["spearman"] for d in folds],
         "grid": {k: [str(v) for v in vs] for k, vs in grid.items()} if grid else None,
         "n_configs": int(np.prod([len(v) for v in grid.values()])) if grid else 0,
         "chosen_per_fold": [d["chosen"] for d in folds] if grid else None,
