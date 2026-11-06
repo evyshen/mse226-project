@@ -2,6 +2,7 @@
 data/*
 !data/README.md
 *.csv
+!results/*.csv   # aggregate metrics only, no data rows
 *.parquet
 *.xlsx
 
