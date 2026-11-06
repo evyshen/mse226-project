@@ -1,0 +1,16 @@
+{
+  "algorithm": "Lasso",
+  "feature_set": "FS2",
+  "outcome": "Rating Cycle 1 Total Number of Health Deficiencies",
+  "alpha": 0.002395026619987486,
+  "cv_rmse_at_alpha_nonnested": 5.904922101748994,
+  "n_train_rows": 11717,
+  "n_features_after_encoding": 105,
+  "n_nonzero": 84,
+  "intercept": 8.60915005240689,
+  "threshold": null,
+  "seed": 226,
+  "sklearn": "1.7.2",
+  "pandas": "2.3.3",
+  "numpy": "2.2.6"
+}
