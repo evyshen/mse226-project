@@ -4,6 +4,12 @@ Every modeling choice, the alternatives considered, and why. Lecture numbers ref
 Choices marked **provisional** belong to Emily (outcome, stakeholder) or Alex (feature sets, Model 1). They were set
 so the pipeline could run, and they change in one place (`src/config.py`, `src/features.py`).
 
+## Reconciled with Emily's Overleaf text (2026-11-06)
+
+- **Outcome, stakeholder and leakage rule:** Emily's Sections 1–2 match P1–P3 below, so no change was needed.
+- **QM ratings:** Emily's rule in 1(b) allows the QM ratings and the chain-average staffing and QM ratings. We still leave them out by choice (P5), and the report labels this "not used by choice" rather than leakage. It's an open item for Alex/Emily; adding them means rerunning `02` through `04`.
+- **Log target:** Emily's Section 2 commits to also fitting on log(1+Y). Done as C18; all log variants are worse on count-scale RMSE.
+
 ## Inputs assumed (provisional, owned by A and B)
 
 | # | Decision | Rationale |
