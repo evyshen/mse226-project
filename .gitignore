@@ -22,3 +22,9 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+
+# --- LaTeX build output
+report/*.pdf
+*.aux
+*.log
+*.out
