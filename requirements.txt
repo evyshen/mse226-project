@@ -1,0 +1,4 @@
+# Versions used for the split (from 01_dedup_and_split.py). Python 3.13.
+pandas==3.0.5
+numpy==2.5.3
+scikit-learn==1.9.1
