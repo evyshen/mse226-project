@@ -1,63 +1,58 @@
 # Alex: start here
 
-Hi Alex! This guide gets you set up and gives you a prompt to paste into Claude so it can redo your part in line with
-what Emily and Evy have already built. It should take about 30 minutes to set up, then Claude does most of the work and
-you check it.
+Hi Alex! You **don't need to learn git or GitHub** for this. Claude does the analysis, you check it, and Evy puts it on
+GitHub. Plan for about 15 minutes of setup, then Claude does most of the work.
+
+**Who does what:**
+
+| Step | You | Claude | Evy |
+| --- | --- | --- | --- |
+| Get the files | Download 2 things (below) | | Shares dev.csv |
+| Do the analysis | Paste the prompt, answer its questions, check results | Writes code, runs it, makes figures, drafts text | |
+| Hand it in | Send Evy one ZIP, paste the text into Overleaf | | Commits your files to GitHub |
+
+> **Why not let Claude connect to GitHub directly?** We tried. The GitHub connector fails to sign in from the Claude app,
+> and Claude can't push to GitHub for you anyway. Downloading a ZIP is the simplest reliable path.
 
 ---
 
-## Part 1: One-time setup (no command line needed)
+## Step 1: Download the team's code (2 min)
 
-1. **Accept the repo invite.** Check your email for a GitHub invite to `evyshen/mse226-project` and accept it.
-   (If there's no invite, send Evy your GitHub username.)
-2. **Install GitHub Desktop** (https://desktop.github.com) and sign in with your GitHub account.
-3. **Download the repo:** in GitHub Desktop, File → Clone Repository → choose `evyshen/mse226-project` → pick a folder
-   such as `Documents/mse226-project` → Clone.
-4. **Add the data:** get `dev.csv` from Evy (Drive). Put it in the repo's `data/` folder. Git ignores that folder, so the
-   data never gets uploaded. **Never** ask for, open, or give anyone (including Claude) `holdout.csv`.
-5. **Make your own branch:** in GitHub Desktop, Current Branch → New Branch → name it `alex/eda` → Create.
-   Your work stays separate until Evy reviews it.
+1. Open **https://github.com/evyshen/mse226-project** in your browser. (You don't need to log in; the repo is public.)
+2. Click the green **`<> Code`** button → **Download ZIP**.
+3. Open your Downloads folder and **double-click `mse226-project-main.zip`** to unzip it. You'll get a folder called
+   `mse226-project-main`.
+4. Move that folder somewhere easy to find, e.g. **Documents**. Rename it to `mse226-project` if you like.
 
-**Saving and sharing work later (GitHub Desktop):**
+## Step 2: Add the data file (2 min)
 
-- The left panel lists changed files. Make sure **no `.csv` from `data/`** is listed. Results CSVs in `results/` are fine.
-- Type a short summary (e.g. "EDA script and figures") → **Commit to alex/eda** → **Push origin**.
-- Click **Create Pull Request**. It opens GitHub in your browser; click Create. Evy reviews it and merges.
-- **Don't upload files through the GitHub website.** That's what overwrote the team README last time.
+1. Evy shared **`dev.csv`** with you on Google Drive. Open it in Drive and click **Download** (⋮ menu → Download).
+2. Move the downloaded `dev.csv` into the **`data`** folder inside `mse226-project` (next to the `README.md` that's
+   already in there).
+3. ⚠️ **Only `dev.csv`.** If you ever see `holdout.csv`, don't open it, download it, or give it to Claude. The handout
+   says the holdout must stay untouched until Part 2.
 
----
-
-## Part 2: What's already decided (read before starting)
-
-- **Outcome:** `Rating Cycle 1 Total Number of Health Deficiencies`. This is the number of health deficiencies at a
-  facility's most recent inspection cycle. Stakeholder: a state survey agency deciding which nursing homes to inspect
-  first. (Report Sections 1–2, written by Emily.)
-- **Data:** `data/dev.csv` = 11,748 facilities (the 80% development split, seed 226). 31 rows have no outcome, so
-  11,717 are used.
-- **Leakage rule:** anything produced by the inspection being predicted is excluded. The list is in `src/features.py`
-  (`LEAKAGE`).
-- **Feature sets** (`src/features.py`):
-    - FS1 = facility profile, staffing, turnover, case mix, state.
-    - FS2 = FS1 + prior inspection history + engineered features.
-- **Models are done** (`results/cv_results.csv`): baseline, OLS (your Model 1, already run on the shared folds), lasso and
-  random forest. The final model is lasso on FS2. Every decision and its reason is in `DECISIONS.md`.
-- **Metrics:** RMSE (primary) and MAE. We **dropped Spearman** because it isn't covered in lectures. Use ordinary
-  (Pearson) correlations.
-- **The report lives on Overleaf**, not in the repo. Your sections are 5a–5e, the OLS bullet in 6d, your Section 8
-  entry, and the Figures page.
-- **Page budget:** the report is already over the 5-page limit. Section 5 gets about **0.75 page of text**. The Figures
-  page is one page of figures only.
-
----
-
-## Part 3: Prompt to paste into Claude
-
-Open the **Claude desktop app → Cowork**, select your `mse226-project` folder when asked, and paste everything in the
-box below.
+Your folder should look like this:
 
 ```
-I'm Person B (Alex) on a 3-person MS&E 226 (Stanford, Fundamentals of Data Science) project, Part 1. The repo is in my
-selected folder. My teammates already finished the setup and the models. I need you to redo my part so it matches their
+mse226-project/
+  data/
+    dev.csv        <- you added this
+    README.md
+  src/  scripts/  results/  reviews/  DECISIONS.md  README.md ...
+```
+
+## Step 3: Start Claude (2 min)
+
+1. Open the **Claude desktop app** and switch to **Cowork** (top of the window).
+2. When it asks for a folder, choose your **`mse226-project`** folder. (Or click the folder icon by the message box.)
+3. Copy **everything in the grey box in Step 4** and paste it as your first message. Press Enter.
+
+## Step 4: The prompt (copy all of it)
+
+```
+I'm Person B (Alex) on a 3-person MS&E 226 (Stanford, Fundamentals of Data Science) project, Part 1. My selected folder
+is our team repo, downloaded from GitHub as a ZIP (it may not be a git repo; that's fine, don't run git). My teammates already finished the setup and the models. I need you to redo my part so it matches their
 work exactly and meets the project handout. Work step by step and show me results before writing report text.
 
 READ FIRST (in this order): README.md, DECISIONS.md, src/config.py, src/features.py, src/pipeline.py,
@@ -120,17 +115,54 @@ them with Evy.
 TASK 4: draft my Section 8 (AI tools) entry, 3 sentences: tools and versions used (ask me), what I delegated, how I
 checked it, plus one concrete suggestion I accepted, modified or rejected (ask me). Don't claim checks I didn't do.
 
-When finished, list every file you created or changed, so I can commit them on my alex/eda branch in GitHub Desktop.
+WHEN FINISHED
+- Make a folder alex_deliverables/ in my selected folder and COPY into it every file you created or changed, keeping
+  their paths (alex_deliverables/scripts/06_eda.py, alex_deliverables/results/eda/..., alex_deliverables/figures/fig1.pdf).
+  Do NOT copy anything from data/.
+- Save the LaTeX from Task 2 as alex_deliverables/overleaf_section5.tex and the Task 4 entry as
+  alex_deliverables/overleaf_section8.tex.
+- Zip it as alex_deliverables.zip and give me a short list of what's inside.
 ```
 
----
+## Step 5: While Claude works (20-40 min, mostly waiting)
 
-## Part 4: Checklist before you open the pull request
+- **Answer its questions.** It will ask which AI tools and versions you used, and for one suggestion you accepted or
+  rejected, for Section 8.
+- **Look at what it shows you.** You'll see the tables and Figure 1 before it writes text. Ask it to explain anything you
+  don't follow. You'll need to explain every number and plot in the oral presentation.
+- If it asks to open `holdout.csv` or the raw CMS file: **say no.**
 
-- [ ] `python scripts/06_eda.py` runs start to finish on your machine (or in Claude) without errors.
-- [ ] No `data/*.csv` in the GitHub Desktop changes list.
-- [ ] Every number in your LaTeX text appears in a `results/eda/*.csv` file.
-- [ ] You can explain every plot and number in your own words (the oral presentation tests this).
-- [ ] Sections 5a–5e, the OLS bullet and your Section 8 entry are pasted into Overleaf; your last name is in the
-      author line.
-- [ ] `figures/fig1.pdf` is uploaded to Overleaf (Upload → into a `figures` folder) and the report compiles.
+## Step 6: Hand in your work (10 min)
+
+**A. Send the code to Evy**
+
+1. In your `mse226-project` folder, find **`alex_deliverables.zip`**.
+2. Send it to Evy (Slack, email or Drive). Evy commits it to GitHub. You're done with GitHub.
+
+**B. Put your text in Overleaf**
+
+1. Open our Overleaf project (Evy will share the link). Click **main.tex** on the left.
+2. Find **`\section{Data description and exploration}`** (Cmd+F, search "Data description").
+3. Select from `\textbf{(a) Data collection.}` down to the end of the `(e) Missing values.` paragraph (just before
+   `\section{Prediction}`). Replace it with everything in **`alex_deliverables/overleaf_section5.tex`** (open it in
+   TextEdit, select all, copy).
+4. In Section 6(d), replace the OLS bullet's text, which ends in `\TODO{Alex}`, with the OLS bullet from the same file.
+5. In **Section 8 (AI tools)**, paste your entry from **`overleaf_section8.tex`** above Evy's.
+6. In the author line near the top, replace `Alex \TODO{last name}` with your full name.
+7. **Upload the figure:** on the left file panel click the **upload icon** (arrow ↑) → **New folder** first, named
+   `figures`. Then select that folder → upload → choose **`alex_deliverables/figures/fig1.pdf`**.
+8. Near the bottom, under `\section*{Figures}`, delete the `\TODO{...}` line and paste the
+   `\includegraphics` line from your file.
+9. Click **Recompile** (green button). If you see red errors, copy the error message into Claude and ask it to fix the
+   LaTeX.
+10. Tell Evy and Emily it's in. The report is over the page limit, so we'll trim together.
+
+## Final checklist
+
+- [ ] Claude ran `scripts/06_eda.py` with no errors, and you saw the tables and Figure 1.
+- [ ] Nothing from `data/` is inside `alex_deliverables.zip`.
+- [ ] You can explain each plot and number in your own words.
+- [ ] Sections 5a–5e, the OLS bullet, your Section 8 entry, your name and Figure 1 are all in Overleaf, and it compiles.
+- [ ] You sent `alex_deliverables.zip` to Evy.
+
+Questions → message Evy.
