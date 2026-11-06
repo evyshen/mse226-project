@@ -1,0 +1,69 @@
+{
+  "model": "rf_log",
+  "fs": "FS2",
+  "rmse": [
+    6.28856604738129,
+    6.18523404381451,
+    6.3742794055822865,
+    6.048160812579843,
+    6.372010141934426
+  ],
+  "mae": [
+    4.293178182461685,
+    4.160229890506066,
+    4.248509330933268,
+    4.176175838548317,
+    4.244832482469571
+  ],
+  "spearman": [
+    0.6344130651599844,
+    0.6755314152505711,
+    0.6417194341982703,
+    0.6449115978444367,
+    0.6580963981483596
+  ],
+  "grid": {
+    "regressor__model__max_depth": [
+      "None",
+      "15"
+    ],
+    "regressor__model__min_samples_leaf": [
+      "1",
+      "5",
+      "20"
+    ],
+    "regressor__model__max_features": [
+      "sqrt",
+      "0.33"
+    ]
+  },
+  "n_configs": 12,
+  "chosen_per_fold": [
+    {
+      "regressor__model__max_depth": "None",
+      "regressor__model__max_features": "0.33",
+      "regressor__model__min_samples_leaf": "1"
+    },
+    {
+      "regressor__model__max_depth": "15",
+      "regressor__model__max_features": "0.33",
+      "regressor__model__min_samples_leaf": "1"
+    },
+    {
+      "regressor__model__max_depth": "None",
+      "regressor__model__max_features": "0.33",
+      "regressor__model__min_samples_leaf": "1"
+    },
+    {
+      "regressor__model__max_depth": "None",
+      "regressor__model__max_features": "0.33",
+      "regressor__model__min_samples_leaf": "1"
+    },
+    {
+      "regressor__model__max_depth": "15",
+      "regressor__model__max_features": "0.33",
+      "regressor__model__min_samples_leaf": "1"
+    }
+  ],
+  "seconds": 182.4
+}

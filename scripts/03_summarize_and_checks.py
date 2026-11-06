@@ -22,14 +22,18 @@ from src.config import DEV_CSV, ID, RESULTS_DIR, SEED                    # noqa:
 from src.features import FEATURE_SETS, build_features                    # noqa: E402
 from src.pipeline import FOLDS, evaluate, group_folds, make_pipeline     # noqa: E402
 
-NAMES = {"baseline": "Baseline (training-fold mean)", "ols": "OLS", "lasso": "Lasso", "rf": "Random forest"}
+NAMES = {"baseline": "Baseline (training-fold mean)", "ols": "OLS", "lasso": "Lasso", "rf": "Random forest",
+         "ols_log": "OLS, log(1+Y)", "lasso_log": "Lasso, log(1+Y)", "rf_log": "Random forest, log(1+Y)"}
 
 
 def table():
     rows = []
     for m in NAMES:
         for fs in ["FS1", "FS2"]:
-            d = json.loads((RESULTS_DIR / "raw" / f"{m}_{fs}.json").read_text())
+            f = RESULTS_DIR / "raw" / f"{m}_{fs}.json"
+            if not f.exists():
+                continue  # log-target variants are run on FS2 only
+            d = json.loads(f.read_text())
             if m == "baseline" and fs == "FS2":
                 continue  # baseline ignores features; identical to FS1
             sel = None

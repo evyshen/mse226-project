@@ -69,6 +69,8 @@ so the pipeline could run, and they change in one place (`src/config.py`, `src/f
 | C13 | Chain-grouped CV vs plain CV (FS2, fixed hyperparameters) | OLS +0.061, lasso +0.027, RF +0.074 RMSE | Plain CV is slightly optimistic because of chain clustering, but the ranking of models doesn't change. Report this in 6b and 7b. |
 | C14 | RF beyond the grid edge (max_features 0.1 / 0.5 / 1.0) and untuned gradient boosting | 6.031 / 6.056 / 6.096; boosting 5.940 +/- 0.054 | Widening the grid doesn't help RF. Untuned boosting comes close to lasso but doesn't beat it. Nonlinear methods don't buy accuracy here. |
 
+| C18 | Log-target variants (Emily's Section 2): fit on log(1+Y), back-transform with expm1, score on the count scale (FS2, nested CV) | OLS 6.894 +/- 0.976; lasso 6.962 +/- 1.132; RF 6.254 +/- 0.138, all worse than the count-scale versions | Fitting on the log scale targets the conditional *median*. Back-transforming underpredicts the mean, and expm1 blows up a few extreme predictions (one lasso fold had RMSE 8.93). Because RMSE on counts is the primary metric, the final model stays on the count scale. The lasso-log alpha hit the grid's lower edge (1e-4), which in effect is OLS-log, already shown to be worse. |
+
 ## Section 6f: final model
 
 | # | Decision | Rationale |

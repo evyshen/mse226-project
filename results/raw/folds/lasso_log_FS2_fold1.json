@@ -1,0 +1,1 @@
+{"rmse": 6.935131290616614, "mae": 4.284855553989268, "spearman": 0.6920507107748196, "chosen": {"regressor__model__alpha": "0.0001"}, "seconds": 9.2}

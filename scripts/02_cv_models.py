@@ -34,6 +34,12 @@ RF_TREES = 300
 
 
 def spec(model, fs):
+    """MODEL may end in '_log': fit on log(1+Y), back-transform with expm1, score on the count scale."""
+    if model.endswith("_log"):
+        from sklearn.compose import TransformedTargetRegressor
+        pipe, grid = spec(model[:-4], fs)
+        ttr = TransformedTargetRegressor(regressor=pipe, func=np.log1p, inverse_func=np.expm1, check_inverse=False)
+        return ttr, ({f"regressor__{k}": v for k, v in grid.items()} if grid else None)
     num, cat = FEATURE_SETS[fs]
     if model == "baseline":
         return make_pipeline(DummyRegressor(strategy="mean"), num, cat), None
@@ -97,6 +103,7 @@ BUDGET = float(__import__("os").environ.get("TIME_BUDGET_S", "1e9"))
 if __name__ == "__main__":
     df, y, _ = build_features(pd.read_csv(DEV_CSV, low_memory=False, dtype={ID: str}))
     jobs = ([(m, f) for m in ["baseline", "ols", "lasso", "rf"] for f in ["FS1", "FS2"]]
+            + [(m, "FS2") for m in ["ols_log", "lasso_log", "rf_log"]]
             if sys.argv[1] == "all" else [(sys.argv[1], sys.argv[2])])
     for m, f in jobs:
         run(m, f, df, y)
