@@ -39,3 +39,7 @@ report/*.pdf
 data/holdout*.csv
 data/NH_ProviderInfo*.csv
 **/holdout*.csv
+
+# --- The saved final pipeline is small (18 KB) and required for Part 2, so it is committed
+!models/
+!models/final_pipeline.joblib

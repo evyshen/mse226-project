@@ -3,7 +3,7 @@
 alpha is re-chosen on the full dev data with the shared 5 folds and the same grid used in CV.
 The saved object is one sklearn Pipeline (imputation + encoding + scaling + lasso), so Part 2
 only needs build_features() and pipeline.predict(). Writes models/final_pipeline.joblib
-(gitignored; share via Drive) and results/final_model.json + results/final_coefficients.csv.
+(committed; saved with scikit-learn 1.7.2, load it with the same version) and results/final_model.json + results/final_coefficients.csv.
 """
 import json
 import sys
