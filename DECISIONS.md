@@ -10,6 +10,20 @@ so the pipeline could run, and they change in one place (`src/config.py`, `src/f
 - **QM ratings:** Emily's rule in 1(b) allows the QM ratings and the chain-average staffing and QM ratings. We still leave them out by choice (P5), and the report labels this "not used by choice" rather than leakage. It's an open item for Alex/Emily; adding them means rerunning `02` through `04`.
 - **Log target:** Emily's Section 2 commits to also fitting on log(1+Y). Done as C18; all log variants are worse on count-scale RMSE.
 
+## Section 5 EDA (Alex, merged 2026-11-06)
+
+`scripts/06_eda.py` reproduces every CSV in Alex's deliverable byte for byte from `data/dev.csv`. It loads data through
+`build_features()`, uses Pearson correlations only, and has no tests or p-values. One change on merge: Figure 1(a)'s axis
+label said "most recent standard inspection". It now says "most recent rating cycle", to match Emily's outcome
+definition (standard inspection plus complaint investigations).
+
+**Open feature-set questions raised by the EDA** (see `reviews/B_feature_set_suggestions.md`). Any change means rerunning 02–05:
+
+- Staffing Rating (r = −0.25 with the outcome) is stronger than any reported-hours column, and its largest correlation
+  with an FS2 column is only 0.57. That weakens P5's "redundant" reason for leaving it out.
+- `With a Resident and Family Council`: blank (5.1%) probably means "none", but mode imputation codes it as "Resident".
+- Near-duplicate pairs (r ≥ 0.95) make OLS coefficients hard to read. Lasso handles them.
+
 ## Inputs assumed (provisional, owned by A and B)
 
 | # | Decision | Rationale |

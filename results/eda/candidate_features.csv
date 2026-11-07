@@ -1,0 +1,12 @@
+column,r_with_outcome,share_missing,max_abs_r_with_FS2_numeric,most_correlated_FS2_feature
+Staffing Rating,-0.24649150823256594,0.010838951950157891,0.5720479487974566,Reported Total Nurse Staffing Hours per Resident per Day
+Chain Average Staffing Rating,-0.20361517155828818,0.3058803447981565,0.556121614081255,Reported Total Nurse Staffing Hours per Resident per Day
+Adjusted Total Nurse Staffing Hours per Resident per Day,-0.2028928379637533,0.02381155585900828,0.8101677018198828,Reported Total Nurse Staffing Hours per Resident per Day
+Adjusted RN Staffing Hours per Resident per Day,-0.17554260998074464,0.02381155585900828,0.9511108099555945,Reported RN Staffing Hours per Resident per Day
+Short-Stay QM Rating,-0.1343276162289627,0.19586924980797132,0.22160094653766513,Reported Physical Therapist Staffing Hours per Resident Per Day
+Case-Mix Total Nurse Staffing Hours per Resident per Day,0.13101121720632786,0.02381155585900828,0.9999999999162056,Nursing Case-Mix Index
+Nursing Case-Mix Index Ratio,0.13101112253547081,0.02381155585900828,0.9999999997744452,Nursing Case-Mix Index
+Reported Licensed Staffing Hours per Resident per Day,-0.0972971880412767,0.02381155585900828,0.8171216719869022,Reported Total Nurse Staffing Hours per Resident per Day
+QM Rating,-0.06739942535228124,0.010753605871810191,0.18584596964157268,chain_size
+Long-Stay QM Rating,0.006511547128962402,0.03516258427925237,0.20722244125844186,Nursing Case-Mix Index
+Chain Average QM Rating,0.0017970137950345513,0.3058803447981565,0.2862996906325218,chain_size

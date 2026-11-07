@@ -1,0 +1,11 @@
+feature_1,feature_2,r,abs_r
+Rating Cycle 2/3 Health Deficiency Score,Rating Cycle 2/3 Total Health Score,0.9776725930212321,0.9776725930212321
+Reported Total Nurse Staffing Hours per Resident per Day,Total number of nurse staff hours per resident per day on the weekend,0.9759125422702223,0.9759125422702223
+Reported RN Staffing Hours per Resident per Day,Registered Nurse hours per resident per day on the weekend,0.9522919973192583,0.9522919973192583
+Number of Certified Beds,Average Number of Residents per Day,0.9215412903504057,0.9215412903504057
+Number of Certified Beds,log_beds,0.8935844674083366,0.8935844674083366
+Rating Cycle 2/3 Total Number of Health Deficiencies,Rating Cycle 2/3 Number of Complaint Health Deficiencies,0.8780683531182525,0.8780683531182525
+Reported RN Staffing Hours per Resident per Day,rn_share,0.8426513886414132,0.8426513886414132
+Average Number of Residents per Day,log_beds,0.8277937170737389,0.8277937170737389
+Reported Nurse Aide Staffing Hours per Resident per Day,Reported Total Nurse Staffing Hours per Resident per Day,0.8109041025097845,0.8109041025097845
+Reported Nurse Aide Staffing Hours per Resident per Day,Total number of nurse staff hours per resident per day on the weekend,0.791685266138103,0.791685266138103

@@ -4,6 +4,7 @@ data/*
 *.csv
 # aggregate metrics only, no data rows
 !results/*.csv
+!results/**/*.csv
 *.parquet
 *.xlsx
 

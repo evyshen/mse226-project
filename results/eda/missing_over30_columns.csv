@@ -1,0 +1,25 @@
+column,share_missing,type,in_LEAKAGE,in_FS2
+Chain Name,0.3066053796390875,chain affiliation (blank for non-chain),False,False
+Chain ID,0.3066053796390875,chain affiliation (blank for non-chain),False,False
+Number of Facilities in Chain,0.3066053796390875,chain affiliation (blank for non-chain),False,False
+Chain Average Overall 5-star Rating,0.3066053796390875,chain affiliation (blank for non-chain),True,False
+Chain Average Health Inspection Rating,0.3066053796390875,chain affiliation (blank for non-chain),True,False
+Chain Average Staffing Rating,0.3066053796390875,chain affiliation (blank for non-chain),False,False
+Chain Average QM Rating,0.3066053796390875,chain affiliation (blank for non-chain),False,False
+Short-Stay QM Rating Footnote,0.8020088525706504,footnote code,False,False
+Registered Nurse turnover footnote,0.8732550221314266,footnote code,False,False
+Administrator turnover footnote,0.88772557030984,footnote code,False,False
+Total nursing staff turnover footnote,0.9264555669050051,footnote code,False,False
+Geocoding Footnote,0.9457780047667688,footnote code,False,False
+Staffing Rating Footnote,0.9495233231188287,footnote code,False,False
+Long-Stay QM Rating Footnote,0.9577800476676881,footnote code,False,False
+Physical Therapist Staffing Footnote,0.974889342866871,footnote code,False,False
+Reported Staffing Footnote,0.9749744637385087,footnote code,False,False
+QM Rating Footnote,0.9821246169560777,footnote code,False,False
+Overall Rating Footnote,0.991317671092952,footnote code,False,False
+Health Inspection Rating Footnote,0.991317671092952,footnote code,False,False
+Rating Cycle 1 Standard Survey Footnote,0.9914027919645897,footnote code,True,False
+Average Number of Residents per Day Footnote,0.9959993190330269,footnote code,False,False
+Rating Cycle 2 Standard Survey Footnote,0.9996595165134491,footnote code,False,False
+Number of Citations from Infection Control Inspections,0.9327545114061968,inspection-derived,True,False
+Special Focus Status,0.9635682669390535,inspection-derived,True,False

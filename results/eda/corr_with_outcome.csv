@@ -1,0 +1,26 @@
+feature,r,abs_r,n_nonmissing,group
+Rating Cycle 2/3 Total Number of Health Deficiencies,0.618555778629709,0.618555778629709,11717,history
+Rating Cycle 2/3 Number of Complaint Health Deficiencies,0.5190408971019677,0.5190408971019677,11717,history
+Rating Cycle 2 Number of Standard Health Deficiencies,0.49548377399026544,0.49548377399026544,11717,history
+Rating Cycle 2/3 Health Deficiency Score,0.43113384075346495,0.43113384075346495,11717,history
+Rating Cycle 2/3 Total Health Score,0.41780574015125344,0.41780574015125344,11717,history
+Registered Nurse turnover,0.23793684321343467,0.23793684321343467,10258,profile/staffing
+log_beds,0.2117996494623254,0.2117996494623254,11715,engineered
+Number of administrators who have left the nursing home,0.19581905126173726,0.19581905126173726,10428,profile/staffing
+Total nursing staff turnover,0.18984035021381598,0.18984035021381598,10883,profile/staffing
+Rating Cycle 2/3 Number of Health Revisits,0.1809581208422034,0.1809581208422034,11717,history
+Number of Certified Beds,0.1760246667401873,0.1760246667401873,11715,profile/staffing
+Average Number of Residents per Day,0.16179984878562234,0.16179984878562234,11679,profile/staffing
+Reported RN Staffing Hours per Resident per Day,-0.15092307075287695,0.15092307075287695,11438,profile/staffing
+years_certified,0.1465813689847482,0.1465813689847482,11717,engineered
+Reported Total Nurse Staffing Hours per Resident per Day,-0.14380316751984923,0.14380316751984923,11438,profile/staffing
+Reported Nurse Aide Staffing Hours per Resident per Day,-0.137123644725001,0.137123644725001,11438,profile/staffing
+Nursing Case-Mix Index,0.13101114400481784,0.13101114400481784,11438,profile/staffing
+Rating Cycle 2/3 Health Revisit Score,0.1274332765224405,0.1274332765224405,11717,history
+rn_share,-0.12363383225589791,0.12363383225589791,11438,engineered
+Total number of nurse staff hours per resident per day on the weekend,-0.11922691665334381,0.11922691665334381,11438,profile/staffing
+Registered Nurse hours per resident per day on the weekend,-0.11903676241021084,0.11903676241021084,11438,profile/staffing
+chain_size,0.06714944387824788,0.06714944387824788,11717,profile/staffing
+Reported Physical Therapist Staffing Hours per Resident Per Day,-0.0583898275025224,0.0583898275025224,11437,profile/staffing
+Reported LPN Staffing Hours per Resident per Day,0.05190360462965498,0.05190360462965498,11438,profile/staffing
+occupancy,0.01405623125534452,0.01405623125534452,11677,engineered
